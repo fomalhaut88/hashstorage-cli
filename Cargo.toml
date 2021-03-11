@@ -1,0 +1,33 @@
+[package]
+name = "hashstorage-cli"
+version = "0.1.0"
+authors = ["Хлебущев Александр Сергеевич <a.khlebushhev@robo.cash>"]
+edition = "2018"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wasm-bindgen = { version = "0.2.71", features = ["serde-serialize"]  }
+js-sys = "0.3.48"
+wasm-bindgen-futures = "0.4.21"
+serde = { version = "1.0.80", features = ["derive"] }
+serde_derive = "^1.0.59"
+rand = { version = "0.7.3", features = ["wasm-bindgen"] }
+sha2 = "0.8.1"
+bigi = { git = "https://github.com/fomalhaut88/bigi.git", tag = "v0.4.0" }
+bigi-ecc = { git = "https://github.com/fomalhaut88/bigi-ecc.git", tag = "v0.4.1" }
+hashstorage-utils = { git = "https://github.com/fomalhaut88/hashstorage-utils.git", tag = "v0.1.0" }
+
+[dependencies.web-sys]
+version = "0.3.4"
+features = [
+  'Headers',
+  'Request',
+  'RequestInit',
+  'RequestMode',
+  'Response',
+  'Window',
+  'Storage',
+  'console',
+]

@@ -1,0 +1,9 @@
+/target/
+/Cargo.lock
+
+/pkg/
+/hashstorage-cli-pkg/
+/hashstorage-cli-wasm/
+
+/node_modules/
+/package-lock.json
