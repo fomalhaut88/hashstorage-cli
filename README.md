@@ -1,6 +1,6 @@
 # hashstorage-cli
 
-**hashstorage-cli** is a JS library that implements a convenient API to interact with a hashstorage backend (https://github.com/fomalhaut88/hashstorage). It includes a number of high level functions to create key pairs, encrypt, decrypt and sign data and request the hashstorage backend through its REST API. The mission of the library is to help your project provide the better security on the client side. As far as **hashstorage-cli** is written in Rust and compiled into WASM, it supports asynchronous import.
+**hashstorage-cli** is a JS library that implements a convenient API to interact with a hashstorage backend (https://github.com/fomalhaut88/hashstorage). It includes a number of high level functions to create key pairs, encrypt, decrypt and sign data and request the hashstorage backend through its REST API. The mission of the library is to help your project provide a better security on the client side. As far as **hashstorage-cli** is written in Rust and compiled into WASM, it supports asynchronous import.
 
 A simple example:
 
