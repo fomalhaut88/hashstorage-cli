@@ -204,4 +204,4 @@ myWorker.addEventListener('message', e => {
 myWorker.postMessage([42, 23])
 ```
 
-**Note!** You are unable to make HTTP requests inside of a JS worker, because this operation requires the window object to exist. So you are unable to use the methods of the API object to a hashstorage backend. A solution is you can send the data from the worker with `postMessage` and perform the HTTP request in the main script.
+**Note!** You are unable to make HTTP requests inside of a JS worker, because this operation requires the window object to exist. So you are unable to use the methods of the API object. A solution is you can send the data from the worker with `postMessage` and perform the HTTP requests in the main script.
