@@ -1,10 +1,22 @@
 # hashstorage-cli
 
-...
+**hashstorage-cli** is a JS library that implements a convenient API to interact with a hashstorage backend (https://github.com/fomalhaut88/hashstorage). It includes a number of high level functions to create key pairs, encrypt, decrypt and sign data and request the hashstorage backend through its REST API. The mission of the library is to help your project provide the better security on the client side. As far as **hashstorage-cli** is written in Rust and compiled into WASM, it supports asynchronous import.
 
-## Installation
+A simple example:
 
-...
+```javascript
+(async () => {
+    // Import the library
+    const hsc = await import('hashstorage-cli')
+
+    // Define a hashstorage backend API object
+    const api = hsc.Api.new("https://hashstorage-cloud.com")
+
+    // Get version on hashstorage backend
+    const version = await api.getVersion()
+    console.log(version)
+})()
+```
 
 ## Installation from source
 
@@ -191,3 +203,5 @@ myWorker.addEventListener('message', e => {
 // For example, it can be called with setTimeout.
 myWorker.postMessage([42, 23])
 ```
+
+**Note!** You are unable to make HTTP requests inside of a JS worker, because this operation requires the window object to exist. So you are unable to use the methods of the API object to a hashstorage backend. A solution is you can send the data from the worker with `postMessage` and perform the HTTP request in the main script.
