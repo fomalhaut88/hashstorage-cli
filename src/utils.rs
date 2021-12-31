@@ -4,6 +4,8 @@ use wasm_bindgen_futures::JsFuture;
 use web_sys::{Request, RequestInit, RequestMode, Response, Storage};
 
 
+/// Performs an HTTP request asynchnonously by given URL
+/// and returns parsed JSON.
 pub async fn http_request_json(
             url: &str, method: &str, body: Option<JsValue>
         ) -> Result<JsValue, JsValue> {
@@ -46,6 +48,7 @@ pub async fn http_request_json(
 }
 
 
+/// Gets localStorage.
 pub fn get_local_storage() -> Storage {
     let window = web_sys::window().unwrap();
     window.local_storage().unwrap().unwrap()

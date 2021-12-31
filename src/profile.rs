@@ -14,6 +14,7 @@ use crate::utils::get_local_storage;
 use crate::api::Api;
 
 
+/// A profile object that contains the key pair.
 #[wasm_bindgen]
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Profile {
@@ -24,11 +25,13 @@ pub struct Profile {
 
 #[wasm_bindgen]
 impl Profile {
+    /// Creates a profile object by given `appid`, `username` and `password`.
     pub fn new(appid: &str, username: &str, password: &str) -> Self {
         let hash = Self::_hashInit(appid, username, password);
         Self::_fromBytes32(&hash)
     }
 
+    /// Checks whether the profile exists in local storage.
     pub fn exists() -> bool {
         let storage = get_local_storage();
         let publicKey = storage.get_item("hsPublicKey").unwrap();
@@ -36,6 +39,7 @@ impl Profile {
         publicKey.is_some() && privateKey.is_some()
     }
 
+    /// Loads the profile object from local storage.
     pub fn load() -> Self {
         let storage = get_local_storage();
         Self {
@@ -44,34 +48,41 @@ impl Profile {
         }
     }
 
+    /// Saves to local storage.
     pub fn save(&self) {
         let storage = get_local_storage();
         storage.set_item("hsPublicKey", &self.publicKey).unwrap();
         storage.set_item("hsPrivateKey", &self.privateKey).unwrap();
     }
 
+    /// Clears the saved profile objects in local storage.
     pub fn clear(&self) {
         let storage = get_local_storage();
         storage.remove_item("hsPublicKey").unwrap();
         storage.remove_item("hsPrivateKey").unwrap();
     }
 
+    /// Gets public key.
     pub fn publicKey(&self) -> String {
         self.publicKey.clone()
     }
 
+    /// Gets groups from hashstorage backend.
     pub fn getGroups(&self, api: &Api) -> Promise {
         api.getGroups(&self.publicKey)
     }
 
+    /// Gets keys from hashstorage backend.
     pub fn getKeys(&self, api: &Api, group: &str) -> Promise {
         api.getKeys(&self.publicKey, &group)
     }
 
+    /// Gets block data from hashstorage backend.
     pub fn getBlockJson(&self, api: &Api, group: &str, key: &str) -> Promise {
         api.getData(&self.publicKey, group, key)
     }
 
+    /// Checks whether the key pair is valid.
     pub fn check(&self) -> bool {
         let private = private_key_from_bytes(
             &hex_to_bytes::<32>(&self.privateKey)
@@ -83,6 +94,7 @@ impl Profile {
         schema.get_point(&private) == public
     }
 
+    /// Builds a signature for the given data.
     pub fn buildSignature(
                 &self, group: &str, key: &str, version: u64, data: &str
             ) -> String {
@@ -100,6 +112,7 @@ impl Profile {
         hex_from_bytes(&signature)
     }
 
+    /// Checks the signature for the data.
     pub fn checkSignature(
                 publicKey: &str, group: &str, key: &str,
                 version: u64, data: &str, signature: &str

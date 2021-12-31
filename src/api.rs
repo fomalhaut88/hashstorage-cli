@@ -6,6 +6,7 @@ use js_sys::Promise;
 use crate::utils::http_request_json;
 
 
+/// API object that contains a set of methods to call.
 #[wasm_bindgen]
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Api {
@@ -15,16 +16,19 @@ pub struct Api {
 
 #[wasm_bindgen]
 impl Api {
+    /// Builds API objects by `root`.
     pub fn new(root: &str) -> Self {
         Self {
             root: root.to_string(),
         }
     }
 
+    /// Gets `root`.
     pub fn root(&self) -> String {
         self.root.clone()
     }
 
+    /// Gets version of hashstorage backend.
     pub fn getVersion(&self) -> Promise {
         let url = format!("{}/version", self.root);
         future_to_promise(async move {
@@ -32,6 +36,7 @@ impl Api {
         })
     }
 
+    /// Gets groups by given `publicKey`.
     pub fn getGroups(&self, publicKey: &str) -> Promise {
         let url = format!("{}/groups/{}", self.root, publicKey);
         future_to_promise(async move {
@@ -39,6 +44,7 @@ impl Api {
         })
     }
 
+    /// Gets keys by given `publicKey` and `group`.
     pub fn getKeys(&self, publicKey: &str, group: &str) -> Promise {
         let url = format!("{}/keys/{}/{}", self.root, publicKey, group);
         future_to_promise(async move {
@@ -46,6 +52,7 @@ impl Api {
         })
     }
 
+    /// Gets block info by given `publicKey`, `group` and `key`.
     pub fn getInfo(&self, publicKey: &str, group: &str, key: &str) -> Promise {
         let url = format!(
             "{}/info/{}/{}/{}", self.root, publicKey, group, key
@@ -55,6 +62,7 @@ impl Api {
         })
     }
 
+    /// Gets block data by given `publicKey`, `group` and `key`.
     pub fn getData(&self, publicKey: &str, group: &str, key: &str) -> Promise {
         let url = format!(
             "{}/data/{}/{}/{}", self.root, publicKey, group, key
@@ -64,6 +72,7 @@ impl Api {
         })
     }
 
+    /// Updates or creats a block by its data.
     pub fn postData(&self, publicKey: &str, group: &str, key: &str,
                     version: u64, data: &str, signature: &str) -> Promise {
         let url = format!(
