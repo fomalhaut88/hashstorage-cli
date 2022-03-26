@@ -2,6 +2,14 @@ use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
 use wasm_bindgen_futures::JsFuture;
 use web_sys::{Request, RequestInit, RequestMode, Response, Storage};
+use serde::{Serialize, Deserialize};
+
+
+#[derive(Serialize, Deserialize, Debug)]
+struct HTTPRequestError {
+    status: u16,
+    detail: Option<String>,
+}
 
 
 /// Performs an HTTP request asynchnonously by given URL
@@ -38,13 +46,19 @@ pub async fn http_request_json(
     let resp: Response = resp_value.dyn_into().unwrap();
 
     // Get JSON data
-    let json = if resp.status() == 200 {
-        JsFuture::from(resp.json()?).await?
-    } else {
-        JsValue::null()
-    };
-
-    Ok(json)
+    match resp.status() {
+        200 => Ok(JsFuture::from(resp.json()?).await?),
+        201 ..= 299 => Ok(JsValue::null()),
+        _ => {
+            let detail = JsFuture::from(resp.text()?).await?;
+            Err(
+                JsValue::from_serde(&HTTPRequestError {
+                    status: resp.status(),
+                    detail: detail.as_string(),
+                }).unwrap()
+            )
+        },
+    }
 }
 
 
