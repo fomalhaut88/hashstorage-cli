@@ -67,6 +67,11 @@ impl Profile {
         self.publicKey.clone()
     }
 
+    /// Gets private key.
+    pub fn privateKey(&self) -> String {
+        self.privateKey.clone()
+    }
+
     /// Gets groups from hashstorage backend.
     pub fn getGroups(&self, api: &Api) -> Promise {
         api.getGroups(&self.publicKey)
