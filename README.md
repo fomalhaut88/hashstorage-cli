@@ -205,3 +205,27 @@ myWorker.postMessage([42, 23])
 ```
 
 **Note!** You are unable to make HTTP requests inside of a JS worker, because this operation requires the window object to exist. So you are unable to use the methods of the API object. A solution is you can send the data from the worker with `postMessage` and perform the HTTP requests in the main script.
+
+## Local storage version checker (LSVC)
+
+**This feature was added in version 1.3.0**
+
+If you want to check on the client side whether there was a replacement with an old record on the server side (Hashstorage instance) you can use LSVC (local storage version checker). LSVC saves the last version of a block in `localStorage` and can compare it. It is recommended to save the version of a block after successful saving and to check it every time after getting the block from the Hashstorage instance. The check result will be `false` if the version exists in the local storage and its value is higher than the version of just received block, othervise the check result is `true`. The use of LSVC is recommended but optional because it may be consuming in some cases. Below there is a simple example of using LSVC.
+
+```javascript
+// Create a LSVC object
+const lsvc = hsc.LSVC.new()
+
+// Get block from the Hashstorage instance
+const blockJson = await profile.getBlockJson(api, "mygroup", "mykey")
+const block = hsc.Block.fromBlockJson(blockJson)
+
+// Check the version
+const isCorrect = lsvc.checkVersion(block)
+
+// ... after some modifications save the block
+await block.save(api, profile)
+
+// Save the version with LSVC after successful saving the block above
+lsvc.saveVersion(block)
+```
