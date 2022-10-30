@@ -1,7 +1,7 @@
 [package]
 name = "hashstorage-cli"
-version = "1.3.0"
-authors = ["Alexander <mail@fomalhaut.su>"]
+version = "1.3.2"
+authors = ["Alex Fomalhaut <alexfomalhaut@gmail.com>"]
 edition = "2021"
 
 [lib]
